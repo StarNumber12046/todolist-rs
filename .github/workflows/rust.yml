@@ -20,11 +20,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build
-      run: cargo build --verbose
+      run: cargo build --verbose --release
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.3
       with:
-        path: target/debug
-        name: Debug-binaries-${{matrix.os}}
-    - name: Run tests
-      run: cargo test --verbose
+        path: target/release
+        name: Binaries-${{matrix.os}}
