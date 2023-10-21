@@ -50,9 +50,16 @@ fn main() -> std::result::Result<(), std::io::Error> {
             let mut todo_name = String::new();
             stdin.read_line(&mut todo_name)?;
             let todo_name = todo_name.trim();
-            let todo = Todo {id: todos.todos.last().unwrap().id + 1 as u32, title: todo_name.to_string(), completed: false};
-            todos.todos.push(todo);
-            fs::write("todos.json", serde_json::to_string(&todos).unwrap())?;
+            if todos.todos.last().is_none() {
+                let todo = Todo {id: 0, title: todo_name.to_string(), completed: false};
+                todos.todos.push(todo);
+                fs::write("todos.json", serde_json::to_string(&todos).unwrap())?;
+            }
+            else {
+                let todo = Todo {id: todos.todos.last().unwrap().id + 1 as u32, title: todo_name.to_string(), completed: false};
+                todos.todos.push(todo);
+                fs::write("todos.json", serde_json::to_string(&todos).unwrap())?;
+            }
         }
         "3" => {
             println!("Which one do you want to change? (0-{})", todos.todos.len()-1);
